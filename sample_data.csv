@@ -1,0 +1,6 @@
+id,email,status,amount,date
+1001,arun@example.com,Approved,1500,12-01-2026
+1002,meena@example.com,Rejected,0,12-01-2026
+1002,meena@example.com,Rejected,0,12-01-2026
+1004,,Pending,750,13-01-2026
+1005,kumar@example.com,Approved,,14-01-2026
