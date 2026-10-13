@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Report History — NovaFlow AI{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">WORKSPACE LOG</p><h1>Report <span>history.</span></h1><p class="hero-copy">Recent analyses created in this local prototype.</p></div>
+<section class="panel">
+{% if history %}
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Created</th><th>Records</th><th>Duplicates</th><th>Missing</th><th>Report</th></tr></thead><tbody>
+{% for item in history %}<tr><td class="file-name">{{ item.filename }}</td><td>{{ item.created }}</td><td>{{ item.rows }}</td><td>{{ item.duplicates }}</td><td>{{ item.missing }}</td><td><a class="text-link" href="{{ url_for('download_report', report_id=item.id) }}">Download</a></td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty-state"><span>◷</span><p>No saved reports yet.</p><a class="text-link" href="{{ url_for('index') }}">Start an analysis →</a></div>{% endif %}
+</section>
+{% endblock %}

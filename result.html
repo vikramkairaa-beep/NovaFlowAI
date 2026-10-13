@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Analysis Result — NovaFlow AI{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">ANALYSIS COMPLETE</p><h1>Here's your <span>data overview.</span></h1><p class="hero-copy">Source file: <strong>{{ filename }}</strong></p></div>
+<div class="stats">
+  <div class="stat-card"><span>Total records</span><strong>{{ analysis.rows }}</strong><small>Rows detected</small></div>
+  <div class="stat-card"><span>Total columns</span><strong>{{ analysis.columns }}</strong><small>Fields detected</small></div>
+  <div class="stat-card warning-stat"><span>Duplicate rows</span><strong>{{ analysis.duplicates }}</strong><small>Review before removing</small></div>
+  <div class="stat-card warning-stat"><span>Missing cells</span><strong>{{ analysis.missing_cells }}</strong><small>Across all columns</small></div>
+</div>
+<section class="panel">
+  <div class="section-heading"><div><p class="eyebrow">FIELD DETAILS</p><h2>Column quality</h2></div><span class="step">02</span></div>
+  <div class="table-wrap"><table><thead><tr><th>Column</th><th>Type</th><th>Unique values</th><th>Missing</th></tr></thead><tbody>
+  {% for col in analysis.column_info %}<tr><td class="file-name">{{ col.name }}</td><td><span class="type-pill">{{ col.dtype }}</span></td><td>{{ col.unique }}</td><td>{% if col.missing %}<span class="number-alert">{{ col.missing }}</span>{% else %}0{% endif %}</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+<section class="panel">
+  <div class="section-heading"><div><p class="eyebrow">DATA PREVIEW</p><h2>First 8 rows</h2></div></div>
+  {% if analysis.preview_rows %}
+  <div class="table-wrap"><table><thead><tr>{% for header in analysis.preview_headers %}<th>{{ header }}</th>{% endfor %}</tr></thead><tbody>
+  {% for row in analysis.preview_rows %}<tr>{% for header in analysis.preview_headers %}<td>{{ row[header] }}</td>{% endfor %}</tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<p class="hint">No rows to preview.</p>{% endif %}
+</section>
+<section class="panel report-panel">
+  <div class="section-heading"><div><p class="eyebrow">GENERATED REPORT</p><h2>Ready to save</h2></div></div>
+  <pre>{{ report_text }}</pre>
+  <div class="actions"><a class="primary button-link" href="{{ url_for('download_report', report_id=report_id) }}">Download report ↓</a><a class="secondary button-link" href="{{ url_for('index') }}">Analyze another file</a></div>
+</section>
+{% endblock %}
